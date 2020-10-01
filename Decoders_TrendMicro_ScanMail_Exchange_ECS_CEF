@@ -1,0 +1,103 @@
+<decoder name="TrendMicro-ScanMail">
+ <prematch>(SMEX)[\d+]:\s(CEF):</prematch>
+</decoder>
+
+<!-- BEGIN: EVENT TRACKING -->
+<decoder name="TrendMicro-Scanmail-Event-Tracking">
+ <parent>TrendMicro-ScanMail</parent>
+ <prematch>|Event Tracking|</prematch>
+ <regex offset="after_parent">(\d+)\|(\.*)\|(\.*)\|(\.*)\|(\.*)\|(\.*)\|(\.*)\|shost=(\.*)\ssuser=(\.*)\srt=(\w+\s\d\d\s\d\d\d\d\s\d\d:\d\d:\d\d)\ssrc=(\d+.\d+.\d+.\d+)\scs1Label=\.*\seventType=(\.*)msg=</regex>
+ <order>labels.log_format_version,labels.device_vendor,labels.appliance_product,labels.appliance_version,event.code,event.category,event.severity,labels.host,labels.user,labels.ScanTime,source.address,event.category</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-Scanmail-Event-Tracking">
+ <parent>TrendMicro-ScanMail</parent>
+ <regex>\smsg=(\.*)</regex>
+ <order>labels.message</order>
+</decoder>
+<!-- END: EVENT TRACKING -->
+
+<decoder name="TrendMicro-Scanmail-Security-risk-scan">
+ <parent>TrendMicro-ScanMail</parent>
+ <regex offset="after_parent">(\d+)\|(\.*)\|(\.*)\|(\.*)\|(\.*)\|(\.*)\|(\.*)\|rt=(\w+\s\d\d\s\d\d\d\d\s\d\d:\d\d:\d\d)\scs2Label=\.*\sfoundAt=(\.*)\ssuser=(\.*);\s\sduser=(\.*);</regex>
+ <order>labels.log_format_version,labels.device_vendor,labels.appliance_product,labels.appliance_version,event.code,event.category,event.severity,labels.ScanTime,network.application,source.address,destination.address</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-Scanmail-Security-risk-scan">
+ <parent>TrendMicro-ScanMail</parent>
+ <regex>\s\smsg=(\.*)cs4Label=</regex>
+ <order>labels.msg</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-Scanmail-Security-risk-scan">
+ <parent>TrendMicro-ScanMail</parent>
+ <regex>cs4Label=\.*\smessageId=(\.*)\sact=\.*</regex>
+ <order>labels.messageID</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-Scanmail-Security-risk-scan">
+ <parent>TrendMicro-ScanMail</parent>
+ <regex>\sact=(\.*)\scs1Label=</regex>
+ <order>event.action</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-Scanmail-Security-risk-scan">
+ <parent>TrendMicro-ScanMail</parent>
+ <regex>virusName=(\.*)\scs6Label=\.*\sthreatType=(\.*)\sfname=(\.*)\scs3Label=\.*\sriskLevel=(\.*)\scat=</regex>
+ <order>labels.virusName,labels.threat_type,labels.attachement_name,labels.threat_level,labels.IsRamsomware</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-Scanmail-Security-risk-scan">
+ <parent>TrendMicro-ScanMail</parent>
+ <regex>isRansomware=(\d)</regex>
+ <order>labels.IsRamsomware</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-Scanmail-Security-risk-scan">
+ <parent>TrendMicro-ScanMail</parent>
+ <regex>\spolicyName=(\.*)\sfname=(\.*)</regex>
+ <order>labels.policy.name</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-Scanmail-Security-risk-scan">
+ <parent>TrendMicro-ScanMail</parent>
+ <regex>fname=(\.*)\scs6Label=</regex>
+ <order>labels.attachment_name</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-Scanmail-Security-risk-scan">
+ <parent>TrendMicro-ScanMail</parent>
+ <regex>policyReason=(\.*)</regex>
+ <order>labels.policy_reason</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-Scanmail-Security-risk-scan">
+ <parent>TrendMicro-ScanMail</parent>
+ <regex>threatName=(\.*)\scs3Label=riskLevel\sriskLevel=(\.*)\scn1Label=</regex>
+ <order>labels.threat.name,labels.risk_level</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-Scanmail-web-reputation">
+ <parent>TrendMicro-ScanMail</parent>
+ <regex>cat=(\.*)\scn1Label</regex>
+ <order>labels.category</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-Scanmail-Security-risk-scan">
+ <parent>TrendMicro-ScanMail</parent>
+ <regex>cat=(\.*)</regex>
+ <order>labels.category</order>
+ <use_own_name>true</use_own_name>
+</decoder>
