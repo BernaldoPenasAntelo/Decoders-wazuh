@@ -1,0 +1,32 @@
+<group name="syslog,TrendMicroScanMail,">
+
+  <rule id="200300" level="0">
+    <decoded_as>TrendMicro-ScanMail</decoded_as>
+    <description>TrendMicro-ScanMail messages grouped.</description>
+  </rule>
+  
+  <rule id="200301" level="3">
+    <if_sid>200300</if_sid>
+    <field name="event.severity">^Low$</field>
+    <description>TrendMicro-ScanMail  $(event.severity) - $(event.category) - $(event.action)</description>
+  </rule>
+  
+   <rule id="200302" level="5">
+    <if_sid>200300</if_sid>
+    <field name="event.severity">^Medium$</field>
+    <description>TrendMicro-ScanMail  $(event.severity) - $(event.category) - $(event.action)</description>
+  </rule>
+  
+  <rule id="200303" level="7">
+    <if_sid>200300</if_sid>
+    <field name="event.severity">^High$</field>
+    <description>TrendMicro-ScanMail  $(event.severity) - $(event.category) - $(event.action)</description>
+  </rule>
+  
+    <rule id="200304" level="10">
+    <if_sid>200300</if_sid>
+    <field name="event.severity">^Critical$</field>
+    <description>TrendMicro-ScanMail  $(event.severity) - $(event.category) - $(event.action)</description>
+  </rule>
+  
+</group>
