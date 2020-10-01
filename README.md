@@ -18,6 +18,7 @@ Contents:
 
 In some cases existing decoder may be bypasssed with configuration, for example Sonicwall
 
+```
  <decoder_exclude>0295-sonicwall_decoders.xml</decoder_exclude>
-
+```
 
