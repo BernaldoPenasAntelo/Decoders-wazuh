@@ -2,7 +2,7 @@
 
 This repository contains custom Decoders and rules for various Products that I have created for my own use.
 
-Log fields where mapped to ECS (Elastic Common Schema) to integrate them with an **ELK stack** please review:
+Log fields where mapped to **ECS (Elastic Common Schema)** to integrate them with an **ELK stack** please review:
 https://www.elastic.co/guide/en/ecs/current/index.html
 
 ----
