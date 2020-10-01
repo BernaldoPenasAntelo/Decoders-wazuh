@@ -1,0 +1,36 @@
+<group name="syslog,sophos_firewall,">
+
+ <rule id="200400" level="0">
+    <decoded_as>Sophos_firewall</decoded_as>
+    <description>Sophos firewall messages grouped.</description>
+ </rule>
+ 
+ <rule id="200401" level="1">
+    <if_sid>200400</if_sid>
+    <field name="log.level">^Information$</field>
+    <description>Sophos Firewall INFORMATIONAL event - $(observer.type) $(event.type) - $(message)</description>
+    <options>no_full_log</options>
+ </rule>
+
+ <rule id="200402" level="5">
+    <if_sid>200400</if_sid>
+    <field name="log.level">^Notice$</field>
+    <description>Sophos Firewall NOTIFICATION event - $(observer.type) $(event.type) - $(message)</description>
+    <options>no_full_log</options>
+ </rule>
+ 
+ <rule id="200403" level="8">
+    <if_sid>200400</if_sid>
+    <field name="log.level">^Warning$</field>
+    <description>Sophos Firewall WARNING event - $(observer.type) $(event.type) - $(message)</description>
+    <options>no_full_log</options>
+ </rule>
+ 
+ <rule id="200404" level="10">
+    <if_sid>200400</if_sid>
+    <field name="log.level">^Critical$</field>
+    <description>Sophos Firewall CRITICAL event - $(observer.type) $(event.type) - $(message)</description>
+    <options>no_full_log</options>
+ </rule>
+
+</group>
