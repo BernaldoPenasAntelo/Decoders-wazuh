@@ -1,0 +1,83 @@
+<decoder name="paloalto-firewall">
+ <prematch>\d+,(\d\d\d\d/\d\d/\d\d \d\d:\d\d:\d\d),(\d+),</prematch>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="paloalto-threat">
+ <parent>paloalto-firewall</parent>
+ <prematch offset="after_parent">^THREAT,</prematch>
+ <regex offset="after_parent">(\.*),(\.*),\d+,\.+,(\d+.\d+.\d+.\d+),(\d+.\d+.\d+.\d+),(\d+.\d+.\d+.\d+),(\d+.\d+.\d+.\d+),(\.+),\.*,\.*,\.*\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*\.*,\.*,\.*,(\d+),(\d+),(\d+),(\d+),\.*,(\w*),(\w*),(\.*),(\.*),\.*,(\w*),\.*,\.*,\.*\.*,(\.*),(\.*),\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,(\w*)</regex>
+ <order>rule.type,event.category,source.ip,destination.ip,source.nat.ip,destination.nat.ip,rule.name,source.port,destination.port,source.nat.port,destination.nat.port,network.transport,event.action,url,labels.content,labels.severity,labels.srccountry,labels.dstcountry,labels.category</order>
+</decoder>
+
+<decoder name="paloalto-userid">
+ <parent>paloalto-firewall</parent>
+ <prematch offset="after_parent">^USERID,</prematch>
+ <regex offset="after_parent">(\.*),(\w+),\d+,\.*,\.*,(\d+.\d+.\d+.\d+),\.*,\.*,\d+,\d+,\d+,\d+,\d+,(\w*),(\w*),\d+,\.*,\d+,\d+,\d+,\d+,\.*,(\w*),\d+,\.*,\.*,\.*,\.*,(\.*)</regex>
+ <order>rule.type,event.category,source.ip,labels.datasource,labels.datasourcetype,host.name,user.full_name</order>
+</decoder>
+
+<!-- BEGIN SYSTEM VARIANT -->
+<decoder name="paloalto-system-variant">
+ <parent>paloalto-firewall</parent>
+ <prematch offset="after_parent">^SYSTEM,</prematch>
+ <regex offset="after_parent">(\.*),(\.+),\.*,\d\d\d\d/\d\d/\d\d \d\d:\d\d:\d\d,\.*,(\w*),(\.*),\.*,\.*,(\w*),(\w*),</regex>
+ <order>rule.type,event.category,labels.object,labels.module,labels.sev,labels.severity</order>
+</decoder>
+
+<decoder name="paloalto-system-variant">
+ <parent>paloalto-firewall</parent>
+ <regex offset="after_regex">"(\.*.)\s(\.*),\s(\.*),\s(\.*),\s(\.*),\s(\.*),\s(\.*)"</regex>
+ <order>labels.description,labels.description2,labels.description3,labels.description4,labels.description5,labels.description6,labels.description7</order>
+</decoder>
+
+<decoder name="paloalto-system-variant">
+ <parent>paloalto-firewall</parent>
+ <regex offset="after_regex">"(\.*.)\s(\.*),\s(\.*),\s(\.*),\s(\.*),\s(\.*)"</regex>
+ <order>labels.description,labels.description2,labels.description3,labels.description4,labels.description5,labels.description6</order>
+</decoder>
+
+<decoder name="paloalto-system-variant">
+ <parent>paloalto-firewall</parent>
+ <regex offset="after_regex">"(\.*.)\s(\.*),\s(\.*),\s(\.*),\s(\.*)"</regex>
+ <order>labels.description,labels.description2,labels.description3,labels.description4,labels.description5</order>
+</decoder>
+
+<decoder name="paloalto-system-variant">
+ <parent>paloalto-firewall</parent>
+ <regex offset="after_regex">"(\.*.)\s(\.*),\s(\.*),\s(\.*)"</regex>
+ <order>labels.description,labels.description2,labels.description3,labels.description4</order>
+</decoder>
+
+<decoder name="paloalto-system-variant">
+ <parent>paloalto-firewall</parent>
+ <regex offset="after_regex">"(\.*.)\s(\.*),\s(\.*)"</regex>
+ <order>labels.description,labels.description2,labels.description3</order>
+</decoder>
+
+<decoder name="paloalto-system-variant">
+ <parent>paloalto-firewall</parent>
+ <regex offset="after_regex">"(\.*.)\s(\.*)"</regex>
+ <order>labels.description,labels.description2</order>
+</decoder>
+
+<decoder name="paloalto-system-variant">
+ <parent>paloalto-firewall</parent>
+ <regex offset="after_regex">,\.*,\.*,\.*,\.*,\.*,\.*,\.*,(\w*)</regex>
+ <order>host.name</order>
+</decoder>
+<!-- END VARIANT -->
+
+<decoder name="paloalto-traffic">
+ <parent>paloalto-firewall</parent>
+ <prematch offset="after_parent">^TRAFFIC,</prematch>
+ <regex offset="after_parent">(\w*),(\w+),\.*,\d\d\d\d/\d\d/\d\d \d\d:\d\d:\d\d,(\d+.\d+.\d+.\d+),(\d+.\d+.\d+.\d+),(\d+.\d+.\d+.\d+),(\d+.\d+.\d+.\d+),(\w*)</regex>
+ <order>rule.type,event.category,source.ip,destination.ip,source.nat.ip,destination.nat.ip,rule.name</order>
+</decoder>
+
+<decoder name="paloalto-config">
+ <parent>paloalto-firewall</parent>
+ <prematch offset="after_parent">^CONFIG,</prematch>
+ <regex offset="after_parent">(\w*),\.*,\.*,\d\d\d\d/\d\d/\d\d \d\d:\d\d:\d\d,(\d+.\d+.\d+.\d+),\.*,(\.*),(\.*),(\.*),(\.*),(\.*)</regex>
+ <order>rule.type,host.name,labels.command,labels.admin,labels.path,labels.result,labels.other</order>
+</decoder>
