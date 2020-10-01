@@ -1,0 +1,241 @@
+<decoder name="TrendMicro-DeepSecurity">
+ <prematch>(DSM)\s(CEF):</prematch>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex offset="after_parent">(\d+)\|(\.*)\|(\.*)\|(\.*)\|(\.*)\|(\.*)\|(\d+)\|</regex>
+ <order>labels.log_format_version,labels.device_vendor,observer.hostname,labels.device_version,event.code,event.action,event.severity</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>src=(\d+.\d+.\d+.\d+)\s\w*=</regex>
+ <order>source.ip</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\sdst=(\d+.\d+.\d+.\d+)\s\w*=</regex>
+ <order>destination.ip</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\ssmac=(\.*)\s\w*=</regex>
+ <order>source.mac</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+<regex>\sdmac=(\.*)\s\w*=</regex>
+ <order>destination.mac</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\ssuser=(\.*)\s\w*=</regex>
+ <order>user.full_name</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>target=(\.*\(*\.*\)*\.*)\s\w*=</regex>
+ <order>labels.target</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\smsg=(\.*)\s\w*=</regex>
+ <order>labels.msg</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>targetID=(\.*)\s\w+=</regex>
+ <order>labels.targetID</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>targetType=(\.*\(*\.*\)*\.*)\s\w+=</regex>
+ <order>labels.targetType</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>TrendMicroDsTags=(\.*)\s\w+=</regex>
+ <order>labels.TrendMicroDsTags</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>cn1=(\.*)\scn1Label=\s\w+=</regex>
+ <order>host.id,labels.hostid</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\scs3=(\.*)\scs3Label=(\.*)\s\w*=</regex>
+ <order>labels.InfectedResources,labels.InfectedResources2</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\scs4=(\.*)\scs4Label=(\.*)\s\w*=</regex>
+ <order>labels.ResourcesType,labels.ResourcesType2</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\scs5=(\.*)\scs5Label=(\.*)\s\w*=</regex>
+ <order>labels.RiskLevel,labels.RiskLevel</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\scs6=(\.*)\scs6Label=(\.*)\s\w*=</regex>
+ <order>labels.Container,labels.Container</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\sfilePath=(\.*\p*\.*\p*\.*)\s\w*=</regex>
+ <order>labels.filepath</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\sact=(\.*)\s\w*=</regex>
+ <order>labels.action</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\sdvc=(\.*)\s\w*=</regex>
+ <order>host.ip</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\sdvchost=(\.*)\s\w*=</regex>
+ <order>host.hostname</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\sTrendMicroDsBehaviorRuleID=(\.*)\s\w*=</regex>
+ <order>labels.TrendMicroDsBehaviorRuleID</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\sTrendMicroDsBehaviorType=(\.*)\s\w*=</regex>
+ <order>labels.TrendMicroDsBehaviorType</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\sTrendMicroDsTenant=(\.*)\s\w*=</regex>
+ <order>labels.TrendMicroDsTenant</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\sTrendMicroDsTenantId=(\.*)\s\w*=</regex>
+ <order>labels.TrendMicroDsTenantId</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\sTrendMicroDsMalwareTarget=(\.*)\s\w*=</regex>
+ <order>labels.TrendMicroDsMalwareTarget</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\sTrendMicroDsMalwareTargetCount=(\.*)\s\w*=</regex>
+ <order>labels.TrendMicroDsMalwareTargetCount</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\sTrendMicroDsMalwareTargetType=(\.*)\s\w*=</regex>
+ <order>labels.TrendMicroDsMalwareTargetType</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\sTrendMicroDsProcess=(\.*)\s\w*=</regex>
+ <order>labels.TrendMicroDsProcess</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\sTrendMicroDsFileMD5=(\.*)\s\w*=</regex>
+ <order>labels.TrendMicroDsFileMD5</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\sTrendMicroDsFileSHA1=(\.*)\s\w*=</regex>
+ <order>labels.TrendMicroDsFileSHA1</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\sTrendMicroDsFileSHA256=(\.*)\s\w*=</regex>
+ <order>labels.TrendMicroDsFileSHA256</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\sTrendMicroDsDetectionConfidence=(\.*)\s\w*=</regex>
+ <order>labels.TrendMicroDsDetectionConfidence</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-System">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\sTrendMicroDsRelevantDetectionNames=(\.*)\s\w*=</regex>
+ <order>labels.TrendMicroDsRelevantDetectionNames</order>
+ <use_own_name>true</use_own_name>
+</decoder>
+
+<decoder name="TrendMicro-DeepSecurity-AntiMalware">
+ <parent>TrendMicro-DeepSecurity</parent>
+ <regex>\scs1=(\.*)\scs1Label=(\.*)\s\w*=</regex>
+ <order>labels.action</order>
+ <use_own_name>true</use_own_name>
+</decoder>
