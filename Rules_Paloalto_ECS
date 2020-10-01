@@ -1,0 +1,254 @@
+<group name="Paloalto rules">
+
+        <rule id="200000" level="0">
+          <decoded_as>paloalto-firewall</decoded_as>
+          <description>Alerts from Paloalto decoder</description>
+        </rule>
+
+        <rule id="200001" level="0">
+                <if_sid>200000</if_sid>
+                <field name="rule.type">THREAT</field>
+                <description>Paloalto Threat event type</description>
+                <options>no_full_log</options>
+        </rule>
+        <rule id="200002" level="0">
+                <if_sid>200000</if_sid>
+                <field name="rule.type">USERID</field>
+                <description>Paloalto UserID event type</description>
+                <options>no_full_log</options>
+        </rule>
+        <rule id="200003" level="0">
+                <if_sid>200000</if_sid>
+                <field name="rule.type">SYSTEM</field>
+                <description>Paloalto System event type</description>
+                <options>no_full_log</options>
+        </rule>
+        <rule id="200004" level="0">
+                <if_sid>200000</if_sid>
+                <field name="rule.type">TRAFFIC</field>
+                <description>Paloalto Traffic event type</description>
+                <options>no_full_log</options>
+        </rule>
+        <rule id="200005" level="0">
+                <if_sid>200000</if_sid>
+                <field name="rule.type">CONFIG</field>
+                <description>Paloalto Config event type</description>
+                <options>no_full_log</options>
+        </rule>
+        <!-- THREAT -->
+        <!--
+
+        event.category
+        ------------
+        *data — Data pattern matching a Data Filtering profile.
+    *file — File type matching a File Blocking profile.
+    *flood — Flood detected via a Zone Protection profile.
+    *packet — Packet-based attack protection triggered by a Zone Protection profile.
+    *scan — Scan detected via a Zone Protection profile.
+    *spyware — Spyware detected via an Anti-Spyware profile.
+    *url — URL filtering log.
+    *virus — Virus detected via an Antivirus profile.
+    *vulnerability — Vulnerability exploit detected via a Vulnerability Protection profile.
+    *wildfire — A WildFire verdict generated when the firewall submits a file to WildFire per a WildFire Analysis profile and a verdict (malicious, phishing, grayware, or benign, depending on what you are logging) is logged in the WildFire Submissions log.
+    *wildfire-virus —Virus detected via an Antivirus profile.
+
+        labels.severity
+        ------------
+        *informational
+        *low
+        *medium
+        *high
+        *critical
+
+        -->
+
+        <rule id="200100" level="3">
+                <if_sid>200001</if_sid>
+                <field name="labels.severity">^informational$</field>
+                <description>Paloalto Informational Threat event - $(labels.category) - $(labels.content)</description>
+                <options>no_full_log</options>
+        </rule>
+        <rule id="200101" level="5">
+                <if_sid>200001</if_sid>
+                <field name="labels.severity">^low$</field>
+                <description>Paloalto Low Threat event - $(labels.category) - $(labels.content)</description>
+                <options>no_full_log</options>
+        </rule>
+        <rule id="200102" level="7">
+                <if_sid>200001</if_sid>
+                <field name="labels.severity">^medium$</field>
+                <description>Paloalto Medium Threat event - $(labels.category) - $(labels.content)</description>
+                <options>no_full_log</options>
+        </rule>
+        <rule id="200103" level="12">
+                <if_sid>200001</if_sid>
+                <field name="labels.severity">^high$</field>
+                <description>Paloalto High Threat event - $(labels.category) - $(labels.content)</description>
+                <options>no_full_log</options>
+        </rule>
+        <rule id="200104" level="15">
+                <if_sid>200001</if_sid>
+                <field name="labels.severity">^critical$</field>
+                <description>Paloalto Critical Threat event - $(labels.category) - $(labels.content)</description>
+                <options>no_full_log</options>
+        </rule>
+
+        <!--
+        SPECIFIC THREAT URL
+        -->
+        <rule id="200105" level="3">
+                <if_sid>200100</if_sid>
+                <field name="event.category">^url$</field>
+                <description>Paloalto URL Threat event INFORMATIONAL $(url) - $(event.action)</description>
+                <options>no_full_log</options>
+        </rule>
+        <rule id="200106" level="5">
+                <if_sid>200101</if_sid>
+                <field name="event.category">^url$</field>
+                <description>Paloalto URL Threat event LOW $(url) - $(event.action)</description>
+                <options>no_full_log</options>
+        </rule>
+        <rule id="200107" level="7">
+                <if_sid>200102</if_sid>
+                <field name="event.category">^url$</field>
+                <description>Paloalto URL Threat event MEDIUM $(url) - $(event.action)</description>
+                <options>no_full_log</options>
+        </rule>
+        <rule id="200108" level="12">
+                <if_sid>200103</if_sid>
+                <field name="event.category">^url$</field>
+                <description>Paloalto URL Threat event HIGH $(url) - $(event.action)</description>
+                <options>no_full_log</options>
+        </rule>
+        <rule id="200109" level="15">
+                <if_sid>200104</if_sid>
+                <field name="event.category">^url$</field>
+                <description>Paloalto URL Threat event CRITICAL $(url) - $(event.action)</description>
+                <options>no_full_log</options>
+        </rule>
+        <!-- SYSTEM -->
+        <!--
+        Mar 24 08:52:35 172.26.26.253 1,2020/03/24 08:52:35,016201012733,SYSTEM,globalprotect,0,2020/03/24 08:52:35,,globalprotectportal-auth-fail,GP-Portal,0,0,general,informational,"GlobalProtect portal user authentication failed. Login from: 213.60.152.14, Source region: ,  User name: hugo.fernandez, Client OS version: Linux Ubuntu 18.04.4 LTS, Reason: Host ID mismatch, Auth type: cookie.",389579,0x0,0,0,0,0,,COPL-1A0401PAFW
+        Mar 24 08:52:35 172.26.26.253 1,2020/03/24 08:52:35,016201012733,SYSTEM,globalprotect,0,2020/03/24 08:52:35,,globalprotectportal-auth-fail,GP-Portal,0,0,general,informational,"GlobalProtect portal user authentication failed. Login from: 213.60.152.14, Source region: ,  User name: manolo.garcia, Client OS version: Linux Ubuntu 18.04.4 LTS, Reason: Host ID mismatch, Auth type: cookie.",389579,0x0,0,0,0,0,,COPL-1A0401PAFW
+        -->
+
+        <rule id="200024" level="5">
+                <if_sid>200003</if_sid>
+                <field name="labels.description">\.*portal user authentication failed\.*</field>
+                <description>Portal user authentication failed,$(labels.description)</description>
+                <options>no_full_log</options>
+        </rule>
+
+        <rule id="200025" timeframe="60" frequency="6" level="12">
+                <if_matched_sid>200024</if_matched_sid>
+                <same_field>labels.description2</same_field>
+                <description>Multiple Globalprotectportal authentication fauilures $(labels.description2) $(labels.description4), Posible Bruteforce attack from same ip</description>
+                <options>no_full_log</options>
+        </rule>
+		
+	    <rule id="200026" timeframe="60" frequency="6" level="12">
+                <if_matched_sid>200024</if_matched_sid>
+                <same_field>labels.description4</same_field>
+                <description>Multiple Globalprotectportal authentication fauilures $(labels.description2) $(labels.description4), Posible Bruteforce attack with same user</description>
+                <options>no_full_log</options>
+        </rule>
+
+        <!--
+        Mar 24 08:52:05 172.26.26.253 1,2020/03/24 08:52:05,016201012733,SYSTEM,globalprotect,0,2020/03/24 08:52:05,,globalprotectgateway-auth-fail,GP-GW-EXT-N,0,0,general,informational,"GlobalProtect gateway user authentication failed. Login from: 62.83.130.223, Source region: ES, User name: maria.dapena, Client OS version: Apple Mac OS X 10.13.6, Reason: Cookie expired, Auth type: cookie.",389560,0x0,0,0,0,0,,COPL-1A0401PAFW
+        -->
+
+        <rule id="200027" level="5">
+                <if_sid>200003</if_sid>
+                <field name="labels.description">\.*gateway user authentication failed\.*</field>
+                <description>Gateway user authentication failed,$(labels.description)</description>
+                <options>no_full_log</options>
+        </rule>
+
+        <rule id="200028" timeframe="60" frequency="6" level="10">
+                <if_matched_sid>200027</if_matched_sid>
+                <same_field>labels.description2</same_field>
+                <description>Multiple GlobalProtectgateway authentication fauilures $(labels.description2) $(labels.description4), Posible Bruteforce attack from same ip</description>
+                <options>no_full_log</options>
+        </rule>
+		
+		<rule id="200029" timeframe="60" frequency="6" level="10">
+                <if_matched_sid>200027</if_matched_sid>
+                <same_field>labels.description4</same_field>
+                <description>Multiple GlobalProtectgateway authentication fauilures $(labels.description2) $(labels.description4), Posible Bruteforce attack with same user</description>
+                <options>no_full_log</options>
+        </rule>
+
+        <!--
+        Mar 24 13:01:06 172.26.26.253 1,2020/03/24 13:01:06,016201012733,SYSTEM,auth,0,2020/03/24 13:01:06,,auth-fail,AUTH-SEQ-VPN,0,0,general,medium,"failed authentication for user 'majo'.  Reason: User is not in allowlist. auth profile 'AUTH-SEQ-VPN', vsys 'vsys1', From: 83.165.191.250.",392650,0x0,0,0,0,0,,COPL-1A0401PAFW
+        -->
+        <rule id="200030" level="5">
+                <if_sid>200003</if_sid>
+                <field name="event.category">auth</field>
+                <field name="object">auth-fail</field>
+                <description>$(labels.description)</description>
+                <options>no_full_log</options>
+        </rule>
+
+        <rule id="200031" timeframe="60" frequency="6" level="12">
+                <if_matched_sid>200030</if_matched_sid>
+                <same_field>labels.description</same_field>
+                <description>Multiple authentication fauilures $(labels.description) $(labels.description4), Posible Bruteforce attack with same user</description>
+                <options>no_full_log</options>
+        </rule>
+		
+        <rule id="200032" timeframe="60" frequency="6" level="12">
+                <if_matched_sid>200030</if_matched_sid>
+                <same_field>labels.description4</same_field>
+                <description>Multiple authentication fauilures $(labels.description) $(labels.description4), Posible Bruteforce attack from same ip</description>
+                <options>no_full_log</options>
+        </rule>
+        <!-- SYSTEM BY labels.severity -->
+
+        <rule id="200010" level="3">
+                <if_sid>200003</if_sid>
+                <field name="labels.severity">^informational$</field>
+                <description>Paloalto Informational System event - $(event.category) - $(labels.description)</description>
+                <options>no_full_log</options>
+        </rule>
+        <rule id="200011" level="4">
+                <if_sid>200003</if_sid>
+                <field name="labels.severity">^low$</field>
+                <description>Paloalto Low System event - $(event.category) - $(labels.description)</description>
+                <options>no_full_log</options>
+        </rule>
+        <rule id="200012" level="5">
+                <if_sid>200003</if_sid>
+                <field name="labels.severity">^medium$</field>
+                <description>Paloalto Medium System event - $(event.category) - $(labels.description)</description>
+                <options>no_full_log</options>
+        </rule>
+        <rule id="200013" level="6">
+                <if_sid>200003</if_sid>
+                <field name="labels.severity">^high$</field>
+                <description>Paloalto High System event - $(event.category) - $(labels.description)</description>
+                <options>no_full_log</options>
+        </rule>
+        <rule id="200014" level="7">
+                <if_sid>200003</if_sid>
+                <field name="labels.severity">^critical$</field>
+                <description>Paloalto Critical System event - $(event.category) - $(labels.description)</description>
+                <options>no_full_log</options>
+        </rule>
+
+
+        <!-- TRAFFIC GENERIC RULE UNCOMMNET IF YOU WANT TO GET ALARMS ****NOISY***** -->
+		<!--
+        <rule id="200040" level="1">
+                <if_sid>200004</if_sid>
+                <description>Paloalto Traffic event</description>
+                <options>no_full_log</options>
+        </rule>
+		-->
+        <!-- CONFIG EVENTS -->
+
+        <rule id="200050" level="3">
+                <if_sid>200005</if_sid>
+                <description>Paloalto Config event</description>
+                <options>no_full_log</options>
+        </rule>
+</group>
