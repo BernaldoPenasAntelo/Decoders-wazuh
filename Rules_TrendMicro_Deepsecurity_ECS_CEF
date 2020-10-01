@@ -1,0 +1,113 @@
+<group name="syslog,TrendMicroDeepSecurity,">
+
+  <rule id="200200" level="0">
+    <decoded_as>TrendMicro-DeepSecurity</decoded_as>
+    <description>TrendMicro-DeepSecurity messages grouped.</description>
+  </rule>
+  
+  <!-- PRE-FILTER EVENTS To DECRESE THE SEVERITY -->
+  
+  <!-- DISCARD WINDoWS EVENTS DUE TO NOISe -->
+  <rule id="200201" level="0">
+    <if_sid>200200</if_sid>
+    <field name="event.severity">^1$|^2$|^3$|^4$|^5$|^6$|^7$|^8$|^9$|^10$</field>
+	<field name="event.action">Microsoft Windows Security Events</field>
+    <description>TrendMicro-DeepSecurity  $(event.severity) - $(event.action) - $(labels.msg)</description>
+  </rule>
+  
+  <rule id="200202" level="0">
+    <if_sid>200200</if_sid>
+    <field name="event.severity">^1$|^2$|^3$|^4$|^5$|^6$|^7$|^8$|^9$|^10$</field>
+	<field name="event.action">Microsoft Windows Events</field>
+    <description>TrendMicro-DeepSecurity  $(event.severity) - $(event.action) - $(labels.msg)</description>
+  </rule>
+  
+  <!-- DISCARD AGENT ERRoRS -->
+   <rule id="200203" level="3">
+    <if_sid>200200</if_sid>
+    <field name="event.severity">^1$|^2$|^3$|^4$|^5$|^6$|^7$|^8$|^9$|^10$</field>
+	<field name="event.action">Agent/Appliance Error</field>
+    <description>TrendMicro-DeepSecurity  $(event.severity) - $(event.action) - $(labels.msg)</description>
+  </rule>
+    
+  <rule id="200204" level="3">
+    <if_sid>200200</if_sid>
+    <field name="event.severity">^1$|^2$|^3$|^4$|^5$|^6$|^7$|^8$|^9$|^10$</field>
+	<field name="labels.cs1">Successful login during non-business hours</field>
+    <description>TrendMicro-DeepSecurity  $(event.severity) - $(event.action) - $(labels.cs1)</description>
+  </rule>
+  
+  <!-- PRE-FILTER EVENTS To RISE SEVERITY -->
+  
+  <!-- FILTER FOR Anti-Malware event IN ORDER TO RAISE SEVERITY-->
+  <rule id="200205" level="7">
+    <if_sid>200200</if_sid>
+    <field name="event.severity">^1$|^2$|^3$|^4$|^5$|^6$</field>
+	<field name="labels.action">^Deny Access$|^Quarantine$|^Delete$|^Terminate$</field>
+    <description>TrendMicro-DeepSecurity  $(event.severity) - $(event.action) - $(labels.cs1)</description>
+  </rule>
+  
+  <!-- END oF PRE_FILTER -->
+  
+
+  
+  <rule id="200206" level="1">
+    <if_sid>200200</if_sid>
+    <field name="event.severity">^1$</field>
+    <description>TrendMicro-DeepSecurity Message Level - $(event.severity) - $(event.action) - $(labels.msg)</description>
+  </rule>
+
+  <rule id="200207" level="2">
+    <if_sid>200200</if_sid>
+    <field name="event.severity">^2$</field>
+    <description>TrendMicro-DeepSecurity Message Level - $(event.severity) - $(event.action) - $(labels.msg)</description>
+  </rule>
+  
+  <rule id="200208" level="2">
+    <if_sid>200200</if_sid>
+    <field name="event.severity">^3$</field>
+    <description>TrendMicro-DeepSecurity Message Level - $(event.severity) - $(event.action) - $(labels.msg)</description>
+  </rule>
+  
+  <rule id="200209" level="4">
+    <if_sid>200200</if_sid>
+    <field name="event.severity">^4$</field>
+    <description>TrendMicro-DeepSecurity Message Level - $(event.severity) - $(event.action) - $(labels.msg)</description>
+  </rule>
+  
+  <rule id="200210" level="5">
+    <if_sid>200200</if_sid>
+    <field name="event.severity">^5$</field>
+    <description>TrendMicro-DeepSecurity Message Level - $(event.severity) - $(event.action) - $(labels.msg)</description>
+  </rule>
+  
+  <rule id="200211" level="6">
+    <if_sid>200200</if_sid>
+    <field name="event.severity">^6$</field>
+    <description>TrendMicro-DeepSecurity Message Level - $(event.severity) - $(event.action) - $(labels.msg)</description>
+  </rule>
+  
+  <rule id="200212" level="7">
+    <if_sid>200200</if_sid>
+    <field name="event.severity">^7$</field>
+    <description>TrendMicro-DeepSecurity Message Level - $(event.severity) - $(event.action) - $(labels.msg)</description>
+  </rule>
+  
+  <rule id="200213" level="8">
+    <if_sid>200200</if_sid>
+    <field name="event.severity">^8$</field>
+    <description>TrendMicro-DeepSecurity Message Level - $(event.severity) - $(event.action) - $(labels.msg)</description>
+  </rule>
+  
+  <rule id="200214" level="9">
+    <if_sid>200200</if_sid>
+    <field name="event.severity">^9$</field>
+    <description>TrendMicro-DeepSecurity Message Level - $(event.severity) - $(event.action) - $(labels.msg)</description>
+  </rule>
+  
+  <rule id="200215" level="10">
+    <if_sid>200200</if_sid>
+    <field name="event.severity">^10$</field>
+    <description>TrendMicro-DeepSecurity Message Level - $(event.severity) - $(event.action) - $(labels.msg)</description>
+  </rule>
+</group>
