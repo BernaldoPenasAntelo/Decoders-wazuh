@@ -1,83 +1,81 @@
-<decoder name="paloalto-firewall">
- <prematch>\d+,(\d\d\d\d/\d\d/\d\d \d\d:\d\d:\d\d),(\d+),</prematch>
- <use_own_name>true</use_own_name>
+<decoder name="sonicwall">
+   <prematch>\sid=\w+\s+sn=\w+\s+time="\.+"\s+fw=\S+ </prematch>
+   <plugin_decoder>SonicWall_Decoder</plugin_decoder>
 </decoder>
 
-<decoder name="paloalto-threat">
- <parent>paloalto-firewall</parent>
- <prematch offset="after_parent">^THREAT,</prematch>
- <regex offset="after_parent">(\.*),(\.*),\d+,\.+,(\d+.\d+.\d+.\d+),(\d+.\d+.\d+.\d+),(\d+.\d+.\d+.\d+),(\d+.\d+.\d+.\d+),(\.+),\.*,\.*,\.*\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*\.*,\.*,\.*,(\d+),(\d+),(\d+),(\d+),\.*,(\w*),(\w*),(\.*),(\.*),\.*,(\w*),\.*,\.*,\.*\.*,(\.*),(\.*),\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,\.*,(\w*)</regex>
- <order>rule.type,event.category,source.ip,destination.ip,source.nat.ip,destination.nat.ip,rule.name,source.port,destination.port,source.nat.port,destination.nat.port,network.transport,event.action,url,labels.content,labels.severity,labels.srccountry,labels.dstcountry,labels.category</order>
+<decoder name="sonicwall-fields">
+  <parent>sonicwall</parent>
+  <regex offset="after_parent">pri=(\S+)\sc=(\S+)\sm=(\S+)\smsg="(\.+)"</regex>
+  <order>event.severity,labels.c,labels.m,event.action</order>
 </decoder>
 
-<decoder name="paloalto-userid">
- <parent>paloalto-firewall</parent>
- <prematch offset="after_parent">^USERID,</prematch>
- <regex offset="after_parent">(\.*),(\w+),\d+,\.*,\.*,(\d+.\d+.\d+.\d+),\.*,\.*,\d+,\d+,\d+,\d+,\d+,(\w*),(\w*),\d+,\.*,\d+,\d+,\d+,\d+,\.*,(\w*),\d+,\.*,\.*,\.*,\.*,(\.*)</regex>
- <order>rule.type,event.category,source.ip,labels.datasource,labels.datasourcetype,host.name,user.full_name</order>
+<!--  BEGIN VARIANT FOR IPS -->
+<decoder name="sonicwall-variant">
+  <parent>sonicwall</parent>
+  <regex>id=(\S+)\s+sn=(\S+)\s+time="(\d+-\d\d-\d\d \d\d:\d\d:\d\d) (\S+)"\s+fw=(\S+)\s+pri=\S+\s+c=(\S+)\s+m=(\S+)\s+msg="(\.+)"\s+id=(\S+)\s+ipscat="(\.+)"\s+ipspri=(\S+)</regex>
+  <order>host.name,labels.sn,event.created,event.timezone,host.name,labels.c,labels.m,event.action,labels.signature_id,labels.ipscat,event.severity</order>
 </decoder>
 
-<!-- BEGIN SYSTEM VARIANT -->
-<decoder name="paloalto-system-variant">
- <parent>paloalto-firewall</parent>
- <prematch offset="after_parent">^SYSTEM,</prematch>
- <regex offset="after_parent">(\.*),(\.+),\.*,\d\d\d\d/\d\d/\d\d \d\d:\d\d:\d\d,\.*,(\w*),(\.*),\.*,\.*,(\w*),(\w*),</regex>
- <order>rule.type,event.category,labels.object,labels.module,labels.sev,labels.severity</order>
+<decoder name="sonicwall-variant">
+  <parent>sonicwall</parent>
+  <regex offset="after_regex">sess="(\S+)"\s+n=(\S+)\s+usr="(\.+)"\s+src=(\d+.\d+.\d+.\d+):(\S+):(\S+)\s+dst=(\d+.\d+.\d+.\d+):(\S+):(\S+)</regex>
+  <order>labels.sess,labels.n,user.full_name,source.ip,source.port,labels.fis_src_port,destination.ip,destination.port,labels.fis_dst_port</order>
 </decoder>
 
-<decoder name="paloalto-system-variant">
- <parent>paloalto-firewall</parent>
- <regex offset="after_regex">"(\.*.)\s(\.*),\s(\.*),\s(\.*),\s(\.*),\s(\.*),\s(\.*)"</regex>
- <order>labels.description,labels.description2,labels.description3,labels.description4,labels.description5,labels.description6,labels.description7</order>
+<decoder name="sonicwall-variant">
+  <parent>sonicwall</parent>
+  <regex offset="after_regex">n=(\S+)\s+src=(\d+.\d+.\d+.\d+):(\S+):(\S+)\s+dst=(\d+.\d+.\d+.\d+):(\S+):(\S+)</regex>
+  <order>labels.n,source.ip,source.port,labels.fis_src_port,destination.ip,destination.port,labels.fis_dst_port</order>
+</decoder>
+<!-- END VARIANT FOR IPS -->
+
+<decoder name="sonicwall-fields">
+  <parent>sonicwall</parent>
+  <regex offset="after_regex">src=(\d+.\d+.\d+.\d+):(\S+):\S+\s+dst=(\d+.\d+.\d+.\d+):(\S+):\S+</regex>
+  <order>source.ip,source.port,destination.ip,destination.port,network.transport</order>
 </decoder>
 
-<decoder name="paloalto-system-variant">
- <parent>paloalto-firewall</parent>
- <regex offset="after_regex">"(\.*.)\s(\.*),\s(\.*),\s(\.*),\s(\.*),\s(\.*)"</regex>
- <order>labels.description,labels.description2,labels.description3,labels.description4,labels.description5,labels.description6</order>
+<decoder name="sonicwall-fields">
+  <parent>sonicwall</parent>
+  <regex offset="after_regex">src=(\d+.\d+.\d+.\d+)\S* dst=(\d+.\d+.\d+.\d+)</regex>
+  <order>source.ip,destination.ip</order>
 </decoder>
 
-<decoder name="paloalto-system-variant">
- <parent>paloalto-firewall</parent>
- <regex offset="after_regex">"(\.*.)\s(\.*),\s(\.*),\s(\.*),\s(\.*)"</regex>
- <order>labels.description,labels.description2,labels.description3,labels.description4,labels.description5</order>
+<decoder name="sonicwall-fields">
+  <parent>sonicwall</parent>
+  <regex>app=(\S+)\s+appName="(\.+)"\.+dstname=(\S+)\.+Category="(\.+)"</regex>
+  <order>labels.app,labels.appName,labels.dstname,labels.Category</order>
 </decoder>
 
-<decoder name="paloalto-system-variant">
- <parent>paloalto-firewall</parent>
- <regex offset="after_regex">"(\.*.)\s(\.*),\s(\.*),\s(\.*)"</regex>
- <order>labels.description,labels.description2,labels.description3,labels.description4</order>
+<!-- BEGIN VARIANT FOR SOFTWARE DOWNLOADS -->
+<decoder name="sonicwall-variant">
+  <parent>sonicwall</parent>
+  <regex>id=(\S+)\s+sn=(\S+)\s+time="(\d+-\d\d-\d\d \d\d:\d\d:\d\d) (\S+)"\s+fw=(\S+)\s+pri=(\S+)\s+c=(\S+)\s+m=(\S+)\s+msg="(\.+)"\s+app=(\S+)\s+appName="(\.+)"\s+n=(\S+)\s+src=(\S+)\s+dst=(\S+)\s+srcMac=(\S+)\s+dstMac=(\S+)\s+proto=(\S+)\s+dstname=(\S+)\s+arg=(\S+)\s+code=(\S+)\s+Category="(\.+)"</regex>
+  <order>host.name,labels.sn,event.created,event.timezone,host.name,event.severity,labels.c,labels.m,event.action,labels.app,labels.appName,labels.n,source.ip,destination.ip,source.mac,destination.mac,network.transport,labels.dstname,labels.arg,labels.code,labels.Category</order>
+</decoder>
+<!-- END VARIANT FOR SOFTWARE DOWNLOADS -->
+
+<!-- BEGIN VARIANT FOR IPV6 PACKAGES-->
+<decoder name="sonicwall-variant">
+  <parent>sonicwall</parent>
+  <regex>id=(\S+)\s+sn=(\S+)\s+time="(\d+-\d\d-\d\d \d\d:\d\d:\d\d) (\S+)"\s+fw=(\S+)\s+pri=\S+\s+c=(\S+)\s+m=(\S+)\s+msg="(\.+)"\s+n=(\S+)\s+srcV6=(\.*)\s+src=(\.*)\s+dstV6=(\.*)\s+dst=(\.*)\s+srcMac=(\.*)\s+dstMac=(\.*)\s+proto=(\S+)</regex>
+  <order>host.name,labels.sn,event.created,event.timezone,host.name,event.severity,labels.c,labels.m,event.action,labels.n,labels.srcV6,source.ip,labels.dstV6,destination.ip,source.mac,destination.mac</order>
+</decoder>
+<!-- END VARIANT FOR IPV6 PACKAGES-->
+<decoder name="sonicwall-fields">
+  <parent>sonicwall</parent>
+  <regex offset="after_regex">proto=(\S+)</regex>
+  <order>network.transport</order>
 </decoder>
 
-<decoder name="paloalto-system-variant">
- <parent>paloalto-firewall</parent>
- <regex offset="after_regex">"(\.*.)\s(\.*),\s(\.*)"</regex>
- <order>labels.description,labels.description2,labels.description3</order>
+<decoder name="sonicwall-fields">
+  <parent>sonicwall</parent>
+  <regex offset="after_regex">note="(\.*)"</regex>
+  <order>labels.note</order>
 </decoder>
 
-<decoder name="paloalto-system-variant">
- <parent>paloalto-firewall</parent>
- <regex offset="after_regex">"(\.*.)\s(\.*)"</regex>
- <order>labels.description,labels.description2</order>
-</decoder>
-
-<decoder name="paloalto-system-variant">
- <parent>paloalto-firewall</parent>
- <regex offset="after_regex">,\.*,\.*,\.*,\.*,\.*,\.*,\.*,(\w*)</regex>
- <order>host.name</order>
-</decoder>
-<!-- END VARIANT -->
-
-<decoder name="paloalto-traffic">
- <parent>paloalto-firewall</parent>
- <prematch offset="after_parent">^TRAFFIC,</prematch>
- <regex offset="after_parent">(\w*),(\w+),\.*,\d\d\d\d/\d\d/\d\d \d\d:\d\d:\d\d,(\d+.\d+.\d+.\d+),(\d+.\d+.\d+.\d+),(\d+.\d+.\d+.\d+),(\d+.\d+.\d+.\d+),(\w*)</regex>
- <order>rule.type,event.category,source.ip,destination.ip,source.nat.ip,destination.nat.ip,rule.name</order>
-</decoder>
-
-<decoder name="paloalto-config">
- <parent>paloalto-firewall</parent>
- <prematch offset="after_parent">^CONFIG,</prematch>
- <regex offset="after_parent">(\w*),\.*,\.*,\d\d\d\d/\d\d/\d\d \d\d:\d\d:\d\d,(\d+.\d+.\d+.\d+),\.*,(\.*),(\.*),(\.*),(\.*),(\.*)</regex>
- <order>rule.type,host.name,labels.command,labels.admin,labels.path,labels.result,labels.other</order>
+<decoder name="sonicwall-fields">
+  <parent>sonicwall</parent>
+  <regex offset="after_regex">rule="(\.*)"</regex>
+  <order>rule.name</order>
 </decoder>
