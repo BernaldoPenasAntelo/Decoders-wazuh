@@ -6,7 +6,7 @@ Log fields where mapped to **ECS (Elastic Common Schema)** to integrate them wit
 https://www.elastic.co/guide/en/ecs/current/index.html
 
 ----
-Contents:
+###Contents:
 
   - Paloalto Firewall Decoders and Rules
   - Sonicwall Firewall Decoders and Rules
@@ -16,7 +16,11 @@ Contents:
   
 ----
 
-In some cases existing decoder may be bypasssed with configuration, for example Sonicwall
+###USAGE
+
+ - Decoders must be placed on **/var/ossec/etc/decoders** folder
+ - Rules must be placed on **/var/ossec/etc/rules** folder
+ - In some cases existing decoder may be bypasssed with configuration, for example Sonicwall
 
 ```
  <decoder_exclude>0295-sonicwall_decoders.xml</decoder_exclude>
